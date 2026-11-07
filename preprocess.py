@@ -19,6 +19,9 @@ def parse_file(filename):
         return None
 
 def preprocess_image_to_numpy(image_path, target_size = (224, 224)):
+    filename = os.path.basename(image_path)
+    file_info = parse_file(filename)
+    print(file_info)
     try:
         with Image.open(image_path) as image:
             image = image.convert('RGB')
@@ -31,7 +34,6 @@ def preprocess_image_to_numpy(image_path, target_size = (224, 224)):
         return None
 
 def explore_directory(root):
-    total_processed = 0
     if not os.path.exists(root):
         print(f"Directory {root} not exist")
         return
@@ -44,5 +46,3 @@ def explore_directory(root):
                     filepath = os.path.join(root, f)
                     print(f"Found {f}")
                     preprocess_image_to_numpy(filepath)
-
-    print(f"Finish preprocess {total_processed} image to numpy from {root}")
