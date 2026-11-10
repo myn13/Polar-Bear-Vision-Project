@@ -4,13 +4,18 @@ Note that for each video sequence, 20 frames are selected at a roughly equal spa
 
 ## Timeline
 
-- [x] ~~Preprocess data~~ — My, Shizuka · Nov 3
-- [ ] Run model on polar bear data and graph results — Kavita, My · Nov 10
-- [ ] Initial group analysis — Everyone · Nov 15
-- [ ] Implement learned attention model — Cindy, Shizuka, Kavita · Nov 15
+| Task | Assigned to | Due | Status |
+|---|---|---|---|
+| Preprocess data | My, Shizuka | Nov 3 | Done |
+| Run model on polar bear data and graph results | Kavita, My | Nov 10 | To do |
+| Initial group analysis | Everyone | Nov 15 | To do |
+| Implement learned attention model | Cindy, Shizuka, Kavita | Nov 15 | To do |
 
 ### After Nov 17
-- [ ] Preprocess and split data — Kavita, Cindy
-- [ ] Train model — Shizuka
-- [ ] Test and graph results — Kavita, Cindy
-- [ ] Group analysis — Everyone
+
+| Task | Assigned to | Status |
+|---|---|---|
+| Preprocess and split data | Kavita, Cindy | To do |
+| Train model | Shizuka | To do |
+| Test and graph results | Kavita, Cindy | To do |
+| Group analysis | Everyone | To do |
