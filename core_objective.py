@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 
-def aggregate_video_embeddings(npz_path="polarbear_frame_embeddings.npz"):
+def aggregate_video_embeddings(npz_path="polarbear_embeddings.npz"):
     data = np.load(npz_path)
     df = pd.DataFrame({
         "identity": data["identity"],
