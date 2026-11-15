@@ -15,8 +15,15 @@ Icon?
 .ipynb_checkpoints
 
 # Jupyter Notebook files
-*.ipynb
+# *.ipynb
 
 # dataset
 PolarBearVidID/
 testPolarBear/
+
+# Python bytecode / cache directories
+__pycache__/
+*.py[cod]
+
+.env
+myenv

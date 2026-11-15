@@ -1,0 +1,9 @@
+Dataset,Rank-1 Accuracy (%)
+BelugaID,66.48
+SeaTurtleIDHeads,91.18
+ATRW,94.33
+PolarBearVidID (Ours),95.5
+BirdIndividualID,97.82
+MacaqueFaces,99.04
+Cows2021,99.54
+AAUZebraFish,99.93
