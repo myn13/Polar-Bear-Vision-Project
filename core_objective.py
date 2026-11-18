@@ -1,8 +1,18 @@
+"""
+Steps
+1. Loads frame fingerperints
+2. Averages each video's 20 frames into one video fingerprint
+3. matches every test video to its most similar training video
+"""
+
 import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
+from logging_utils import get_logger
+
+logger = get_logger(__name__)
 
 def aggregate_video_embeddings(npz_path="data/polarbear_embeddings.npz"):
     data = np.load(npz_path)
@@ -16,9 +26,9 @@ def aggregate_video_embeddings(npz_path="data/polarbear_embeddings.npz"):
     seq_metadata = []
 
     for (identity, sequence, split), group_indices in df.groupby(["identity", "sequence", "split"]).groups.items():
-        group_embs = embeddings[group_indices]
-        mean_emb = np.mean(group_embs, axis=0)
-        mean_emb = mean_emb / np.linalg.norm(mean_emb)
+        group_embs = embeddings[group_indices] 
+        mean_emb = np.mean(group_embs, axis=0)  # averages the 20 fingerprints into one. Expected shape : (768,)
+        mean_emb = mean_emb / np.linalg.norm(mean_emb)  # np.linarlg.norm measures how long a vector is. Dividing by it makes the length of the vector 1 in same direction
         seq_embeddings.append(mean_emb)
         seq_metadata.append({
             "identity": identity,
@@ -28,6 +38,10 @@ def aggregate_video_embeddings(npz_path="data/polarbear_embeddings.npz"):
     return np.array(seq_embeddings), pd.DataFrame(seq_metadata)
 
 def calculate_rank1_accuracy(seq_embeddings, seq_df):
+    """
+    For each test video, it finds the most similar training video 
+    and checks whether that video shows the same bear
+    """
     train_idx = seq_df.index[seq_df["split"] == "train"].tolist()
     test_idx = seq_df.index[seq_df["split"] == "test"].tolist()
     gallery_embs = seq_embeddings[train_idx]
@@ -45,7 +59,8 @@ def calculate_rank1_accuracy(seq_embeddings, seq_df):
             correct_matches += 1
             
     rank1_acc = (correct_matches / len(query_embs)) * 100
-    print(f"Polar Bear Rank-1 Accuracy: {rank1_acc:.2f}%")
+    logger.info("Polar Bear Rank-1 Accuracy: %.2f%% (%d/%d test videos)",
+                rank1_acc, correct_matches, len(query_embs))
     
     return rank1_acc
 
