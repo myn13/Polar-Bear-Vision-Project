@@ -93,7 +93,7 @@ def split_video_dataset(sampled_df, train_ratio=0.70, val_ratio=0.15, test_ratio
     return manifest
 
 
-def save_splits_to_csv(manifest, output_dir="polarbear_splits"):
+def save_splits_to_csv(manifest, output_dir="data/splits"):
     os.makedirs(output_dir, exist_ok=True)
     for split_name in ["train", "validation", "test"]:
         split_df = manifest[manifest["split"] == split_name]
@@ -144,7 +144,7 @@ def extract_and_save_embeddings(manifest_df, model, transform, output_path, batc
     logger.info("Saved embeddings to %s with shape %s", output_path, all_embeddings.shape)
 
 
-def run_pipeline(root_dir, output_npz="polarbear_embeddings.npz", csv_out_dir="polarbear_splits"):
+def run_pipeline(root_dir, output_npz="data/polarbear_embeddings.npz", csv_out_dir="data/splits"):
     records = []
     for root, dirs, files in os.walk(root_dir):
         for f in files:

@@ -1,9 +1,10 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 
-def aggregate_video_embeddings(npz_path="polarbear_embeddings.npz"):
+def aggregate_video_embeddings(npz_path="data/polarbear_embeddings.npz"):
     data = np.load(npz_path)
     df = pd.DataFrame({
         "identity": data["identity"],
@@ -56,7 +57,8 @@ def plot_comparison_results(polar_bear_acc):
     }
     df_comparison = pd.DataFrame(data)
     df_comparison = df_comparison.sort_values(by="Rank-1 Accuracy (%)", ascending=True)
-    df_comparison.to_csv("core_comparison_table.csv", index=False)
+    os.makedirs("results", exist_ok=True)
+    df_comparison.to_csv("results/core_comparison_table.csv", index=False)
     plt.figure(figsize=(10, 6))
     colors = ["#1f77b4" if ds != "PolarBearVidID (Ours)" else "#d62728" for ds in df_comparison["Dataset"]]
     bars = plt.barh(df_comparison["Dataset"], df_comparison["Rank-1 Accuracy (%)"], color=colors)
@@ -69,5 +71,5 @@ def plot_comparison_results(polar_bear_acc):
                  f'{bar.get_width():.2f}%', va='center', fontsize=10)
                  
     plt.tight_layout()
-    plt.savefig("core_comparison_chart.png", dpi=300)
+    plt.savefig("results/core_comparison_chart.png", dpi=300)
     plt.show()
