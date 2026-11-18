@@ -16,19 +16,16 @@ The research question is whether **learning how to combine the frames** (a tempo
    pip install -r requirements.txt
    ```
 
-2. **Dataset (only needed to rerun preprocessing).** Download `PolarBearVidID.zip` (1.6 GB) from Zenodo (link below) and unzip it into `data/PolarBearVidID/`, so the images are at `data/PolarBearVidID/000/000C01T000F000.jpg` and so on. The zip has no top-level folder (it contains `000/`, `001/`, ... directly), so create `data/PolarBearVidID/` first and unzip into it. The folder and the zip are gitignored, so they won't be committed.
-
-   You don't need the dataset to explore the data or run the baseline: the split CSVs and embeddings are already in `data/`.
+2. **Dataset (only needed to rerun preprocessing).** Download `PolarBearVidID.zip` (1.6 GB) from Zenodo (link below) and unzip it into `data/PolarBearVidID/`, so the images are at `data/PolarBearVidID/000/000C01T000F000.jpg` and so on. The zip has no top-level folder (it contains `000/`, `001/`, ... directly), so create `data/PolarBearVidID/` first and unzip into it.
 
 ## Links
 
 - **Dataset:** PolarBearVidID on Zenodo: https://zenodo.org/records/7564529
   - Dataset paper: Zuerl et al., "PolarBearVidID: A Video-based Re-Identification Benchmark Dataset for Polar Bears", *Animals* 13(5), 2023. https://doi.org/10.3390/ani13050801
-- **Frame embeddings** (copy of `data/polarbear_embeddings.npz`): [Google Drive](https://drive.google.com/file/d/1ZQj7SaLEsWEthNlaP6GhSHxAR2eLffKo/view?usp=sharing)
+- **Frame embeddings** polarbear_embeddings.npz
 - **Model paper:** Čermák et al., "WildlifeDatasets: An open-source toolkit for animal re-identification", WACV 2024. https://arxiv.org/abs/2311.09118 ([PDF](https://arxiv.org/pdf/2311.09118); results by model size are in Table 5)
 - **Model weights:** MegaDescriptor-S-224 on Hugging Face: https://huggingface.co/BVRA/MegaDescriptor-S-224
 - **Backbone paper:** Liu et al., "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows", ICCV 2021. https://arxiv.org/abs/2103.14030
-- **Our notes:** [docs/megadescriptor.md](docs/megadescriptor.md), [docs/swin-transformer.md](docs/swin-transformer.md), [docs/todo.md](docs/todo.md)
 
 ## How to run
 
@@ -39,10 +36,6 @@ The research question is whether **learning how to combine the frames** (a tempo
 | Regenerate the splits and embeddings | section 1 of `notebooks/preprocess_and_make_comparison.ipynb` | yes | about 24 min on a laptop CPU, faster with a GPU |
 
 Embedding extraction is skipped if `data/polarbear_embeddings.npz` already exists (the split CSVs are still rebuilt, which takes seconds). To regenerate the embeddings, call `preprocess.run_pipeline(..., overwrite=True)`.
-
-**Notebooks in `notebooks/`** start with a setup cell that switches to the repo folder, so `import preprocess` and paths like `data/splits` work. Copy that cell into any new notebook you create there.
-
-**Logging.** The scripts print progress with a colored logger (`logging_utils.py`): green for info, yellow for warnings, red for errors.
 
 ### Project layout
 
@@ -91,9 +84,9 @@ Polar-Bear-Vision-Project/
 | Task | Assigned to | Due | Status |
 |---|---|---|---|
 | Preprocess data | My, Shizuka | Nov 3 | Done |
-| Run model on polar bear data and graph results | Kavita, My | Nov 10 | To do |
-| Initial group analysis | Everyone | Nov 15 | To do |
-| Implement learned attention model | Cindy, Shizuka, Kavita | Nov 15 | To do |
+| Run model on polar bear data and graph results | Kavita, My | Nov 10 | Done |
+| Initial group analysis | Everyone | Nov 15 | Done |
+| Implement learned attention model | Cindy, Shizuka, Kavita | Nov 15 | Done |
 
 ### After Nov 17
 
