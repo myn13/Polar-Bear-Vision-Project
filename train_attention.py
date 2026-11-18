@@ -46,7 +46,7 @@ class VideoReIDModel(nn.Module):
 
 # Groups MegaDescriptor frame embeddings (from Shizuka's notebook) into one [num_frames, feature_dim] tensor per video
 
-def load_video_features(npz_path="polarbear_embeddings.npz"):
+def load_video_features(npz_path="data/polarbear_embeddings.npz"):
     data = np.load(npz_path)
     embeddings = data["embeddings"]
     df = pd.DataFrame({
