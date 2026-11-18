@@ -147,8 +147,16 @@ def extract_and_save_embeddings(manifest_df, model, transform, output_path, batc
 def run_pipeline(root_dir, output_npz="data/polarbear_embeddings.npz", csv_out_dir="data/splits", overwrite=False):
     """
     Frames -> splits + embeddings.
-    Embedding extraction is slow, so it is skipped if output_npz already exists. Pass overwrite=True to redo it.
+    If the split CSVs and output_npz already exist, everything is skipped (the dataset isn't needed).
+    If only output_npz exists, the splits are rebuilt but the slow embedding extraction is skipped.
+    Pass overwrite=True to redo everything.
     """
+    split_paths = [os.path.join(csv_out_dir, f"{s}.csv") for s in ["train", "validation", "test"]]
+    if not overwrite and os.path.exists(output_npz) and all(os.path.exists(p) for p in split_paths):
+        logger.info("Splits (%s) and embeddings (%s) already exist, skipping preprocessing "
+                    "(pass overwrite=True to redo it)", csv_out_dir, output_npz)
+        return
+
     records = []
     for root, dirs, files in os.walk(root_dir):
         for f in files:

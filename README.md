@@ -33,7 +33,7 @@ The research question is whether **learning how to combine the frames** (a tempo
 | Run the baseline and make the comparison chart | section 2 of `notebooks/preprocess_and_make_comparison.ipynb` | no | seconds |
 | Regenerate the splits and embeddings | section 1 of `notebooks/preprocess_and_make_comparison.ipynb` | yes | about 24 min on a laptop CPU, faster with a GPU |
 
-Embedding extraction is skipped if `data/polarbear_embeddings.npz` already exists (the split CSVs are still rebuilt, which takes seconds). To regenerate the embeddings, call `preprocess.run_pipeline(..., overwrite=True)`.
+If `data/splits/*.csv` and `data/polarbear_embeddings.npz` already exist, `run_pipeline` skips preprocessing entirely, so **Run All** works without the dataset. To regenerate them, put the dataset in `data/PolarBearVidID/` and call `preprocess.run_pipeline(..., overwrite=True)`.
 
 ### Project layout
 
