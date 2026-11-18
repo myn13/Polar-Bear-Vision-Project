@@ -131,10 +131,10 @@ def extract_and_save_embeddings(manifest_df, model, transform, output_path, batc
             with Image.open(p) as img:
                 images.append(transform(img.convert("RGB")))
         batch_tensor = torch.stack(images).to(device)
-        with torch.inference_mode():
-            embeddings = model(batch_tensor).cpu()
+        with torch.inference_mode():    # turn off recording since we dont need to keep track (no backpropagation)
+            embeddings = model(batch_tensor).cpu() # runs the batch through MegaDescriptor in parallel on the GPU then copies the result back to normal memory
             parts.append(embeddings)
-    all_embeddings = torch.cat(parts).numpy()
+    all_embeddings = torch.cat(parts).numpy()   # joins 895 batch results into one array. Expected shape : (28620, 768)
     np.savez_compressed(
         output_path,
         embeddings=all_embeddings,
