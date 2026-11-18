@@ -2,7 +2,7 @@
 Steps
 1. Loads frame fingerperints
 2. Averages each video's 20 frames into one video fingerprint
-3. matches every test video to its most similar training video
+3. matches every validation video to its most similar training video (the test split stays held out)
 """
 
 import os
@@ -37,17 +37,17 @@ def aggregate_video_embeddings(npz_path="data/polarbear_embeddings.npz"):
         })
     return np.array(seq_embeddings), pd.DataFrame(seq_metadata)
 
-def calculate_rank1_accuracy(seq_embeddings, seq_df):
+def calculate_rank1_accuracy(seq_embeddings, seq_df, query_split="validation"):
     """
-    For each test video, it finds the most similar training video 
-    and checks whether that video shows the same bear
+    For each query video (validation by default; the test split stays held out),
+    it finds the most similar training video and checks whether that video shows the same bear
     """
     train_idx = seq_df.index[seq_df["split"] == "train"].tolist()
-    test_idx = seq_df.index[seq_df["split"] == "test"].tolist()
+    query_idx = seq_df.index[seq_df["split"] == query_split].tolist()
     gallery_embs = seq_embeddings[train_idx]
     gallery_ids = seq_df.iloc[train_idx]["identity"].values
-    query_embs = seq_embeddings[test_idx]
-    query_ids = seq_df.iloc[test_idx]["identity"].values
+    query_embs = seq_embeddings[query_idx]
+    query_ids = seq_df.iloc[query_idx]["identity"].values
     sim_matrix = cosine_similarity(query_embs, gallery_embs)
     
     correct_matches = 0
@@ -59,8 +59,8 @@ def calculate_rank1_accuracy(seq_embeddings, seq_df):
             correct_matches += 1
             
     rank1_acc = (correct_matches / len(query_embs)) * 100
-    logger.info("Polar Bear Rank-1 Accuracy: %.2f%% (%d/%d test videos)",
-                rank1_acc, correct_matches, len(query_embs))
+    logger.info("Polar Bear Rank-1 Accuracy: %.2f%% (%d/%d %s videos)",
+                rank1_acc, correct_matches, len(query_embs), query_split)
     
     return rank1_acc
 
@@ -131,7 +131,7 @@ def plot_comparison_results(polar_bear_acc):
              ha="left", va="top", fontsize=11, color=muted)
     fig.text(0.02, 0.01,
              "Other datasets: per-image accuracy reported by Čermák et al. (WACV 2024, Table 5); their individuals were likely seen in training.\n"
-             "Polar bears (ours): per-video accuracy (20 frames averaged) on bears MegaDescriptor never saw.",
+             "Polar bears (ours): per-video validation accuracy (20 frames averaged) on bears MegaDescriptor never saw.",
              fontsize=8.5, color=muted, ha="left", va="bottom")
 
     fig.tight_layout(rect=(0, 0.04, 1, 0.94))
