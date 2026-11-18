@@ -18,14 +18,12 @@ The research question is whether **learning how to combine the frames** (a tempo
 
 2. **Dataset (only needed to rerun preprocessing).** Download `PolarBearVidID.zip` (1.6 GB) from Zenodo (link below) and unzip it into `data/PolarBearVidID/`, so the images are at `data/PolarBearVidID/000/000C01T000F000.jpg` and so on. The zip has no top-level folder (it contains `000/`, `001/`, ... directly), so create `data/PolarBearVidID/` first and unzip into it.
 
-## Links
+## Data
 
 - **Dataset:** PolarBearVidID on Zenodo: https://zenodo.org/records/7564529
   - Dataset paper: Zuerl et al., "PolarBearVidID: A Video-based Re-Identification Benchmark Dataset for Polar Bears", *Animals* 13(5), 2023. https://doi.org/10.3390/ani13050801
 - **Frame embeddings** polarbear_embeddings.npz
-- **Model paper:** Čermák et al., "WildlifeDatasets: An open-source toolkit for animal re-identification", WACV 2024. https://arxiv.org/abs/2311.09118 ([PDF](https://arxiv.org/pdf/2311.09118); results by model size are in Table 5)
 - **Model weights:** MegaDescriptor-S-224 on Hugging Face: https://huggingface.co/BVRA/MegaDescriptor-S-224
-- **Backbone paper:** Liu et al., "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows", ICCV 2021. https://arxiv.org/abs/2103.14030
 
 ## How to run
 
@@ -96,3 +94,8 @@ Polar-Bear-Vision-Project/
 | Train model | Shizuka | To do |
 | Test and graph results | Kavita, Cindy | To do |
 | Group analysis | Everyone | To do |
+
+
+## References
+- **Model paper:** Čermák et al., "WildlifeDatasets: An open-source toolkit for animal re-identification", WACV 2024. https://arxiv.org/abs/2311.09118 ([PDF](https://arxiv.org/pdf/2311.09118); results by model size are in Table 5)
+- **Backbone paper:** Liu et al., "Swin Transformer: Hierarchical Vision Transformer using Shifted Windows", ICCV 2021. https://arxiv.org/abs/2103.14030
