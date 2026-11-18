@@ -38,6 +38,8 @@ The research question is whether **learning how to combine the frames** (a tempo
 | Run the baseline and make the comparison chart | section 2 of `notebooks/preprocess_and_make_comparison.ipynb` | no | seconds |
 | Regenerate the splits and embeddings | section 1 of `notebooks/preprocess_and_make_comparison.ipynb` | yes | about 24 min on a laptop CPU, faster with a GPU |
 
+Embedding extraction is skipped if `data/polarbear_embeddings.npz` already exists (the split CSVs are still rebuilt, which takes seconds). To regenerate the embeddings, call `preprocess.run_pipeline(..., overwrite=True)`.
+
 **Notebooks in `notebooks/`** start with a setup cell that switches to the repo folder, so `import preprocess` and paths like `data/splits` work. Copy that cell into any new notebook you create there.
 
 **Logging.** The scripts print progress with a colored logger (`logging_utils.py`): green for info, yellow for warnings, red for errors.

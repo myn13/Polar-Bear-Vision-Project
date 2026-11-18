@@ -144,7 +144,11 @@ def extract_and_save_embeddings(manifest_df, model, transform, output_path, batc
     logger.info("Saved embeddings to %s with shape %s", output_path, all_embeddings.shape)
 
 
-def run_pipeline(root_dir, output_npz="data/polarbear_embeddings.npz", csv_out_dir="data/splits"):
+def run_pipeline(root_dir, output_npz="data/polarbear_embeddings.npz", csv_out_dir="data/splits", overwrite=False):
+    """
+    Frames -> splits + embeddings.
+    Embedding extraction is slow, so it is skipped if output_npz already exists. Pass overwrite=True to redo it.
+    """
     records = []
     for root, dirs, files in os.walk(root_dir):
         for f in files:
@@ -158,6 +162,9 @@ def run_pipeline(root_dir, output_npz="data/polarbear_embeddings.npz", csv_out_d
     sampled_df = build_manifest_and_sample(records, frames_per_video=20)
     manifest = split_video_dataset(sampled_df)
     save_splits_to_csv(manifest, output_dir=csv_out_dir)
+    if os.path.exists(output_npz) and not overwrite:
+        logger.info("Embeddings already exist at %s, skipping extraction (pass overwrite=True to redo it)", output_npz)
+        return
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, transform = load_feature_extractor(device=device)
     extract_and_save_embeddings(
