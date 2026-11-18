@@ -19,6 +19,8 @@ Icon?
 
 # dataset
 PolarBearVidID/
+*.zip
+*.crdownload
 testPolarBear/
 
 # Python bytecode / cache directories
@@ -26,6 +28,7 @@ __pycache__/
 *.py[cod]
 
 .env
+.venv/
 myenv
 
 .npz

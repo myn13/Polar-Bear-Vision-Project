@@ -1,0 +1,18 @@
+# Model and image processing
+torch
+torchvision
+timm>=1.0,<2
+huggingface_hub>=0.25
+pillow
+
+# Data and evaluation
+numpy
+pandas
+scikit-learn
+matplotlib
+tqdm
+
+# Notebooks
+jupyter
+ipykernel
+requests  # used by notebooks/cs_117_project.ipynb to download the dataset
