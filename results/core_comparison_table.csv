@@ -1,9 +1,31 @@
 Dataset,Rank-1 Accuracy (%)
-BelugaID,66.48
-PolarBearVidID (Ours),90.23255813953487
-SeaTurtleIDHeads,91.18
-ATRW,94.33
-BirdIndividualID,97.82
-MacaqueFaces,99.04
-Cows2021,99.54
-AAUZebraFish,99.93
+NyalaData,14.95
+HappyWhale,14.98
+LionData,16.13
+NOAARightWhale,24.95
+WhaleSharkID,32.74
+HumpbackWhaleID,36.25
+ZindiTurtleRecall,38.38
+BelugaID,38.84
+FriesianCattle2015,55.0
+NDD20,58.57
+SealID,63.31
+HyenaID2022,66.67
+LeopardID2022,67.27
+GiraffeZebraID,68.4
+IPanda50,79.85
+Giraffes,80.97
+SeaTurtleIDHeads,83.74
+CTai,87.46
+PolarBearVidID (ours),90.23255813953487
+ATRW,93.4
+StripeSpotter,94.51
+FriesianCattle2017,96.46
+BirdIndividualID,96.81
+CZoo,98.11
+Cows2021,98.73
+MacaqueFaces,98.89
+AAUZebraFish,99.55
+OpenCows2020,99.58
+AerialCattle2017,100.0
+SMALST,100.0

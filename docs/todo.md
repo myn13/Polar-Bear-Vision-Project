@@ -2,7 +2,9 @@
 
 ## High priority
 
-- [ ] **Fix the comparison table: it uses the wrong model size.** `core_comparison_table.csv` and `plot_comparison_results` in `core_objective.py` compare our result against the paper's MegaDescriptor-**L-384** numbers (the large model), but we use **S-224**, which scores lower on the same datasets (paper, Table 5):
+- [x] **Fix the comparison table: it used the wrong model size.** *Done: `plot_comparison_results` now uses the S-224 numbers for all 29 datasets in Table 5, and the chart notes the per-image vs. per-video and seen vs. unseen differences. Polar bears rank 12 of 30. Let the team know before presenting.*
+
+  It previously compared our result against the paper's MegaDescriptor-**L-384** numbers (the large model), but we use **S-224**, which scores lower on the same datasets (paper, Table 5):
 
   | Dataset | In our table now (L-384) | S-224 (our model) |
   |---|---|---|

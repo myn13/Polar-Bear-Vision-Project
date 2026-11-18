@@ -54,11 +54,11 @@ So for MegaDescriptor, our 13 bears are **unseen individuals of an unseen specie
 - The paper's evidence for unseen species is limited (essentially the one cattle experiment). Most of its reported numbers are on datasets whose individuals **were seen during training**.
 - Our 90.23% may partly come from recognizing **zoo backgrounds** rather than the bears themselves (see `todo.md`).
 
-## Important: our comparison table uses the wrong model size
+## Our comparison chart: use the S-224 numbers
 
-`core_comparison_table.csv` and `plot_comparison_results` in `core_objective.py` compare our polar bear result against numbers from the paper's **MegaDescriptor-L-384** column (Table 5). We use **S-224**, which is smaller and uses lower-resolution input. The paper's S-224 numbers for the same datasets are lower:
+Our first comparison chart compared our polar bear result against numbers from the paper's **MegaDescriptor-L-384** column (Table 5). We use **S-224**, which is smaller and uses lower-resolution input, and scores lower on the same datasets. `plot_comparison_results` in `core_objective.py` now uses the **S-224** column for all 29 datasets (polar bears rank 12 of 30). The difference for the datasets in the first chart:
 
-| Dataset | L-384 (in our table now) | **S-224 (the model we use)** |
+| Dataset | L-384 (first chart) | **S-224 (the model we use)** |
 |---|---|---|
 | BelugaID | 66.48 | **38.84** |
 | SeaTurtleIDHeads | 91.18 | **83.74** |
