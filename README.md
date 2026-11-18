@@ -16,7 +16,7 @@ The research question is whether **learning how to combine the frames** (a tempo
    pip install -r requirements.txt
    ```
 
-2. **Dataset (only needed to rerun preprocessing).** Download `PolarBearVidID.zip` (1.6 GB) from Zenodo (link below) and unzip it into the repo folder, so the images are at `PolarBearVidID/000/000C01T000F000.jpg` and so on. The folder is gitignored, so it won't be committed.
+2. **Dataset (only needed to rerun preprocessing).** Download `PolarBearVidID.zip` (1.6 GB) from Zenodo (link below) and unzip it into `data/PolarBearVidID/`, so the images are at `data/PolarBearVidID/000/000C01T000F000.jpg` and so on. The zip has no top-level folder (it contains `000/`, `001/`, ... directly), so create `data/PolarBearVidID/` first and unzip into it. The folder and the zip are gitignored, so they won't be committed.
 
    You don't need the dataset to explore the data or run the baseline: the split CSVs and embeddings are already in `data/`.
 
@@ -59,11 +59,11 @@ Polar-Bear-Vision-Project/
 │   ├── data_understanding.ipynb               explores the splits and embeddings
 │   └── cs_117_project.ipynb                   earlier self-contained Colab version
 ├── data/
+│   ├── PolarBearVidID/     the dataset (you download it; gitignored)
 │   ├── splits/             train.csv, validation.csv, test.csv (one row per sampled frame)
 │   └── polarbear_embeddings.npz   28,620 × 768 embeddings + labels
 ├── results/                comparison table and chart
-├── docs/                   notes (MegaDescriptor, Swin Transformer) and TODO list
-└── PolarBearVidID/         the dataset (you download it; gitignored)
+└── docs/                   notes (MegaDescriptor, Swin Transformer) and TODO list
 ```
 
 ## Method
