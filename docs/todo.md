@@ -35,6 +35,12 @@
 
   `Resize(224)` alone (one number) keeps the aspect ratio but gives 448 × 224, which MegaDescriptor rejects (`fixed_input_size: true` in its config).
 
+- [ ] **Normalize each frame before averaging.** In `aggregate_video_embeddings` (`core_objective.py`), the 20 frame embeddings are averaged first and only the average is normalized. Frame embedding lengths range from about 5.6 to 41.8, so long ones dominate the average and the frames don't count equally. Try normalizing each frame to length 1 first, then compare Rank-1 with the current **90.23%**. One-line change; runs locally in seconds from the saved `.npz` (no GPU needed):
+
+  ```python
+  group_embs = group_embs / np.linalg.norm(group_embs, axis=1, keepdims=True)
+  ```
+
 - [ ] **Neighboring tracks.** Videos like `T037` and `T038` may have been filmed minutes apart in the same conditions. If one is in train and the other in test, the test is easier than it looks. Check after confirming what `T` means.
 
 - [ ] **Normalization values.** The MegaDescriptor model card example uses mean/std `0.5`, but its `config.json` lists the ImageNet values (`[0.485, 0.456, 0.406]` / `[0.229, 0.224, 0.225]`). We use `0.5`. Could compare both.
