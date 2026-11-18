@@ -6,6 +6,15 @@ We re-identify **individual polar bears from short video clips**: given a clip o
 
 The research question is whether **learning how to combine the frames** (a temporal attention model) beats simply averaging them.
 
+## Contributions
+| Name | Contribution  | 
+|---|---|
+| Shizuka Takao | Built the initial MegaDescriptor Colab prototype, improved pipeline organization and documentation, extended baseline comparisons across 29 datasets, and developing attention heatmaps for failure analysis | 
+|  |  | 
+|  |  | 
+|  |  | 
+
+
 ## Setup
 
 1. **Python environment.** The pipeline was last run with Python 3.13.
