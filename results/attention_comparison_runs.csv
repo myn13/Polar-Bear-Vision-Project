@@ -1,0 +1,6 @@
+weights,rank1_pct,correct,videos
+models/temporal_attention_seed0.pt,85.58,184,215
+models/temporal_attention_seed1.pt,83.72,180,215
+models/temporal_attention_seed2.pt,86.98,187,215
+models/temporal_attention_seed3.pt,82.33,177,215
+models/temporal_attention_seed4.pt,86.05,185,215

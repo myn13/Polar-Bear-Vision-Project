@@ -1,0 +1,3 @@
+method,runs,rank1_pct,lowest,highest,videos
+Mean pooling,1,88.84,88.84,88.84,215
+Learned attention,5,84.93,82.33,86.98,215
