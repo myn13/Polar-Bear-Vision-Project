@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
-from logging_utils import get_logger
+from core.logging_utils import get_logger
 
 logger = get_logger(__name__)
 

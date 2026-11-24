@@ -26,7 +26,7 @@ from tqdm.auto import tqdm
 from torchvision.ops import nms
 from torchvision.transforms.functional import to_tensor
 
-import layerwise
+from experiments import layerwise
 
 BEARS = ("002", "003")      # Tonja and Hertha, Tierpark Berlin
 

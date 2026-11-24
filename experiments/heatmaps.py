@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from sklearn.metrics.pairwise import cosine_similarity
 
-from core_objective import aggregate_video_embeddings
+from core.core_objective import aggregate_video_embeddings
 
 # Chart colors (validated categorical slots 1 and 2, light mode)
 SURFACE, INK, MUTED, GRID_LINE = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"

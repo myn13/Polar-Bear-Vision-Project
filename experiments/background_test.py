@@ -33,8 +33,8 @@ from PIL import Image
 from tqdm.auto import tqdm
 from torchvision.transforms.functional import to_tensor
 
-import layerwise
-from zoo_analysis import load_zoos  # noqa: F401  (bt.load_zoos() in the notebook)
+from experiments import layerwise
+from experiments.zoo_analysis import load_zoos  # noqa: F401  (bt.load_zoos() in the notebook)
 
 VERSIONS = ["original", "bear_only", "background_only", "outline_only"]
 VERSION_LABELS = {

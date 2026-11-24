@@ -9,7 +9,7 @@ from torchvision import transforms as T
 from tqdm.auto import tqdm
 import torch
 from sklearn.model_selection import train_test_split
-from logging_utils import get_logger
+from core.logging_utils import get_logger
 
 logger = get_logger(__name__)
 
