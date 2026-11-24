@@ -112,8 +112,8 @@ Polar-Bear-Vision-Project/
 
 | Task | Assigned to | Status |
 |---|---|---|
-| Preprocess and split data | Kavita, Cindy | To do |
-| Train model | Shizuka | To do |
+| Preprocess and split data | Kavita, Cindy | Done|
+| Train model | Shizuka | Done |
 | Test and graph results | Kavita, Cindy | To do |
 | Group analysis | Everyone | To do |
 
