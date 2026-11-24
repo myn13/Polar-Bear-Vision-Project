@@ -1,46 +1,14 @@
+import argparse
+import os
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 
-# Learned attention model / from Cindy's code
-
-class TemporalAttention(nn.Module):
-    def __init__(self, feature_dim):
-        super(TemporalAttention, self).__init__()
-        self.query = nn.Linear(feature_dim, feature_dim)
-        self.key = nn.Linear(feature_dim, feature_dim)
-        self.value = nn.Linear(feature_dim, feature_dim)
-        self.scale = feature_dim ** 0.5
-
-    def forward(self, video_features):
-        Q = self.query(video_features)
-        K = self.key(video_features)
-        V = self.value(video_features)
-
-        attention_scores = torch.bmm(Q, K.transpose(1, 2)) / self.scale
-        attention_weights = F.softmax(attention_scores, dim=-1)
-
-        attended_features = torch.bmm(attention_weights, V)
-
-        return attended_features, attention_weights
-
-class VideoReIDModel(nn.Module):
-    def __init__(self, feature_dim, num_classes):
-        super(VideoReIDModel, self).__init__()
-        self.temporal_attention = TemporalAttention(feature_dim)
-        self.fc = nn.Linear(feature_dim, num_classes)
-
-    def forward(self, video_features):
-        attended_features, attention_weights = self.temporal_attention(video_features)
-
-        video_representation = attended_features.mean(dim=1)
-        
-        output = self.fc(video_representation)
-        
-        return output, video_representation
+from core.learned_attention import VideoReIDModel  # model from Cindy's code
+from core.core_objective import calculate_rank1_accuracy
 
 # Training loop
 
@@ -74,15 +42,16 @@ def load_video_features(npz_path="data/polarbear_embeddings.npz"):
 
 # trains model to predict which bear is in each video
 
-def train_model(video_features, labels, video_df, num_epochs=40, batch_size=64, seed=0):
+def train_model(video_features, labels, video_df, num_epochs=40, batch_size=64, seed=0, lr=0.001, device="cpu",
+                verbose=True):
     torch.manual_seed(seed)
 
     train_idx = torch.tensor(video_df.index[video_df["split"] == "train"].values)
 
     # Initialize model, loss function, and optimizer
-    model = VideoReIDModel(feature_dim=video_features.shape[-1], num_classes=len(labels.unique()))
+    model = VideoReIDModel(feature_dim=video_features.shape[-1], num_classes=len(labels.unique())).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
     # Training loop
     for epoch in range(num_epochs):
@@ -93,13 +62,59 @@ def train_model(video_features, labels, video_df, num_epochs=40, batch_size=64, 
             optimizer.zero_grad()
 
             # Forward pass
-            outputs, _ = model(video_features[batch_idx])
-            loss = criterion(outputs, labels[batch_idx])
+            outputs, _ = model(video_features[batch_idx].to(device))
+            loss = criterion(outputs, labels[batch_idx].to(device))
 
             # Backward pass and optimization
             loss.backward()
             optimizer.step()
 
-        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+        if verbose:
+            print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
 
     return model
+
+
+def score_on_validation(model, video_features, video_df, device="cpu"):
+    """
+    Rank-1 the same way as the baseline: cosine nearest neighbour on the video embedding, validation
+    videos as queries, training videos as the gallery. The test split is never used.
+    """
+    keep = video_df["split"].isin(["train", "validation"]).to_numpy(copy=True)  # copy: pandas returns a read-only array
+    model.eval()
+    with torch.no_grad():
+        _, video_embeddings = model(video_features[keep].to(device))
+    return calculate_rank1_accuracy(video_embeddings.cpu().numpy(), video_df[keep].reset_index(drop=True),
+                                    query_split="validation")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Train the learned attention model on the training videos, then score it on validation "
+                    "(validation videos are the queries, training videos the gallery; the test split is never used). "
+                    "Run from the repo folder: python -m core.train_attention")
+    parser.add_argument("--embeddings", default="data/polarbear_embeddings.npz", help="frame embeddings (default: %(default)s)")
+    parser.add_argument("--epochs", type=int, default=40, help="default: %(default)s")
+    parser.add_argument("--batch-size", type=int, default=64, help="default: %(default)s")
+    parser.add_argument("--lr", type=float, default=0.001, help="learning rate (default: %(default)s)")
+    parser.add_argument("--seed", type=int, default=0, help="default: %(default)s")
+    parser.add_argument("--device", default="cpu", help='"cpu" or "cuda" (default: %(default)s)')
+    parser.add_argument("--out", default=None, help="where to save the weights (default: models/temporal_attention_seed<seed>.pt)")
+    args = parser.parse_args()
+    if args.out is None:
+        args.out = f"models/temporal_attention_seed{args.seed}.pt"
+
+    video_features, labels, video_df = load_video_features(args.embeddings)
+    model = train_model(video_features, labels, video_df, num_epochs=args.epochs, batch_size=args.batch_size,
+                        seed=args.seed, lr=args.lr, device=args.device)
+
+    score_on_validation(model, video_features, video_df, device=args.device)
+
+    # Load later with: model = VideoReIDModel(768, 13); model.load_state_dict(torch.load(path))
+    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+    torch.save(model.state_dict(), args.out)
+    print(f"Saved weights to {args.out}")
+
+
+if __name__ == "__main__":
+    main()
