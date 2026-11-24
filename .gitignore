@@ -32,12 +32,14 @@ __pycache__/
 myenv
 
 .npz
-# Layer-wise features (about 200 MB, regenerate with notebooks/layerwise_analysis.ipynb)
+# Layer-wise features (about 200 MB, regenerate with notebooks/experiments/layerwise_analysis.ipynb)
 data/layerwise_features.npz
 # Bear vs background embeddings (regenerate with background_test.version_embeddings)
 # data/background_masks.npz and data/animal_counts.csv are small and committed, so every copy uses the same masks
 data/background_embeddings.npz
-# Mask review sheets (large images, regenerate with notebooks/background_check.ipynb)
+# Mask review sheets (large images, regenerate with notebooks/experiments/background_check.ipynb)
 results/background/mask_review/
 # Local notes and plans (not committed)
 docs/local/
+# Trained learned attention weights (about 7 MB each, regenerate with python -m core.train_attention)
+models/

@@ -41,8 +41,10 @@ The research question is whether **learning how to combine the frames** (a tempo
 | Explore the data (counts, splits, leakage check, embeddings) | `notebooks/data_understanding.ipynb` | no | seconds |
 | Run the baseline and make the comparison chart | section 2 of `notebooks/preprocess_and_make_comparison.ipynb` | no | seconds |
 | Regenerate the splits and embeddings | section 1 of `notebooks/preprocess_and_make_comparison.ipynb` | yes | about 24 min on a laptop CPU, faster with a GPU |
+| Train the learned attention model (saves `models/temporal_attention_seed<N>.pt`) | `python -m core.train_attention --seed 0` (one run per seed; add `--device cuda` for a GPU) | no | about 1 min per seed on a laptop CPU |
+| Compare mean pooling and learned attention on validation | `python -m core.evaluate_attention` (every `models/temporal_attention_seed*.pt`) | no | seconds |
 
-If `data/splits/*.csv` and `data/polarbear_embeddings.npz` already exist, `run_pipeline` skips preprocessing entirely, so **Run All** works without the dataset. To regenerate them, put the dataset in `data/PolarBearVidID/` and call `preprocess.run_pipeline(..., overwrite=True)`.
+Run the commands from the repo folder. If `data/splits/*.csv` and `data/polarbear_embeddings.npz` already exist, `run_pipeline` skips preprocessing entirely, so **Run All** works without the dataset. To regenerate them, put the dataset in `data/PolarBearVidID/` and call `preprocess.run_pipeline(..., overwrite=True)`.
 
 ### Project layout
 
@@ -50,19 +52,30 @@ If `data/splits/*.csv` and `data/polarbear_embeddings.npz` already exist, `run_p
 Polar-Bear-Vision-Project/
 ├── README.md
 ├── requirements.txt
-├── preprocess.py           frames → splits + embeddings
-├── core_objective.py       baseline: video embeddings, Rank-1, comparison chart
-├── learned_attention.py    temporal attention model (not trained yet)
-├── logging_utils.py        colored console logger used by the scripts
+├── core/                       main pipeline
+│   ├── preprocess.py           frames → splits + embeddings
+│   ├── core_objective.py       baseline: video embeddings, Rank-1, comparison chart
+│   ├── learned_attention.py    learned attention model (self-attention over the frames)
+│   ├── train_attention.py      trains the learned attention model, saves its weights
+│   ├── evaluate_attention.py   mean pooling vs learned attention on validation
+│   └── logging_utils.py        colored console logger used by the scripts
+├── experiments/                analyses of the baseline
+│   ├── heatmaps.py             which parts of each frame made a match
+│   ├── background_test.py      bear vs background: does the model use the enclosure?
+│   ├── layerwise.py            how much identity each backbone stage carries
+│   ├── two_bears.py            does a second bear in the crop cause mix-ups?
+│   └── zoo_analysis.py         do the mistakes land on zoo-mates?
 ├── notebooks/
 │   ├── preprocess_and_make_comparison.ipynb   runs preprocess + baseline
 │   ├── data_understanding.ipynb               explores the splits and embeddings
-│   └── cs_117_project.ipynb                   earlier self-contained Colab version
+│   ├── experiments/                           one notebook per analysis
+│   └── archive/cs_117_project.ipynb           earlier self-contained Colab version
 ├── data/
 │   ├── PolarBearVidID/     the dataset (you download it; gitignored)
 │   ├── splits/             train.csv, validation.csv, test.csv (one row per sampled frame)
 │   └── polarbear_embeddings.npz   28,620 × 768 embeddings + labels
-├── results/                comparison table and chart
+├── models/                 trained learned attention weights (gitignored)
+├── results/                comparison tables and charts
 └── docs/                   notes (MegaDescriptor, Swin Transformer) and TODO list
 ```
 
@@ -84,7 +97,7 @@ Polar-Bear-Vision-Project/
 7. For each test video, find the most similar training video (cosine similarity) and predict its bear. Report Rank-1 accuracy: the share of test videos whose most similar training video shows the same bear.
 8. Plot the result next to MegaDescriptor's reported results on other wildlife datasets.
 
-`learned_attention.py` (next step): a self-attention layer over the 20 frame embeddings of a video, followed by a classifier over the 13 bears, so the model can learn which frames matter more.
+`learned_attention.py` (`VideoReIDModel`): a self-attention layer over the 20 frame embeddings of a video (every frame attends to every other frame), a learned layer, then the average over the frames, followed by a classifier over the 13 bears. `train_attention.py` trains it on the training videos only. `evaluate_attention.py` scores it like the baseline: cosine nearest neighbour on the video embedding, validation videos as queries, training videos as the gallery.
 
 ## Timeline
 
