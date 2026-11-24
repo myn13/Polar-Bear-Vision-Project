@@ -33,6 +33,7 @@ The research question is whether **learning how to combine the frames** (a tempo
   - Dataset paper: Zuerl et al., "PolarBearVidID: A Video-based Re-Identification Benchmark Dataset for Polar Bears", *Animals* 13(5), 2023. https://doi.org/10.3390/ani13050801
 - **Frame embeddings** polarbear_embeddings.npz
 - **Model weights:** MegaDescriptor-S-224 on Hugging Face: https://huggingface.co/BVRA/MegaDescriptor-S-224
+- **Trained learned attention weights** (5 seeds: `temporal_attention_seed0.pt` to `temporal_attention_seed4.pt`) on Google Drive: https://drive.google.com/drive/folders/1jL_ygEsEwQ_Scr9zLEIoHD-070TPRBFM?usp=sharing. Put them in `models/`, then run `python -m core.evaluate_attention`.
 
 ## How to run
 
