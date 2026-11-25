@@ -10,7 +10,7 @@ The research question is whether **learning how to combine the frames** (a tempo
 | Name | Contribution  | 
 |---|---|
 | Shizuka Takao | Built the initial MegaDescriptor Colab prototype, improved pipeline organization and documentation, extended baseline comparisons across 29 datasets, and developing attention heatmaps for failure analysis | 
-|  |  | 
+| Cindy Zhang | Implemented learned attention layer and combined learned attention with MegaDescriptor to create video identification model. Graphed results of learned attention model versus MegaDescriptor for analysis. | 
 |  |  | 
 |  |  | 
 
