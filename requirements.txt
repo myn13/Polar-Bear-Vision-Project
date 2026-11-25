@@ -16,3 +16,4 @@ tqdm
 jupyter
 ipykernel
 requests  # used by notebooks/cs_117_project.ipynb to download the dataset
+seaborn
