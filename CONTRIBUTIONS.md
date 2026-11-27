@@ -14,8 +14,8 @@
 | :--- | :--- | :--- 
 | 1 | Project name & Members| 
 | 2 | The question | Cindy 
-| 3 | Data and baseline | My
-| 4 | What we did | Shizuka
-| 5 | The result | Kavita
-| 6 | Where it fails | Cindy
+| 3 - 4 | Data and baseline | My
+| 5 | What we did | Shizuka
+| 6 | The result | Kavita
+| 7 | Where it fails | Cindy
 
